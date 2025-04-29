@@ -43,6 +43,7 @@ def register_model(fn):
         mod.__all__ = [model_name]
 
     # add entries to registry dict/sets
+    #print(model_name)
     _model_entrypoints[model_name] = fn
     _model_to_module[model_name] = module_name
     _module_to_models[module_name].add(model_name)
@@ -172,6 +173,8 @@ def is_model(model_name):
     """ Check if a model name exists
     """
     arch_name = get_arch_name(model_name)
+    #print(_model_entrypoints)
+    #print(arch_name)
     return arch_name in _model_entrypoints
 
 

@@ -172,19 +172,20 @@ class ExponentialDecay(autograd.Function):
 
     @staticmethod
     def forward(ctx, weight, N, M, sparsity_rate = 0.0, exp_decay_coef = 0.01 ,current_step_num = 100, isconv=False,sparse_dim = 0):
+        
         ctx.save_for_backward(weight)
 
         output = weight.clone()
 
         w_b = get_sparse_mask(weight,N,M,sparsity_rate,isconv,sparse_dim)
-        
+    
         ctx.mask = w_b
         ctx.decay = 0.0002
         mask_decay_value = math.exp(-1*exp_decay_coef*current_step_num) 
         if(current_step_num%1000==0):
             print("Exponential Mask decay value:", mask_decay_value)
-       return output*(w_b + (1-w_b)*mask_decay_value)
 
+        return output*(w_b + (1-w_b)*mask_decay_value)
 
     @staticmethod
     def backward(ctx, grad_output):
